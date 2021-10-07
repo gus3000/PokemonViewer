@@ -6,7 +6,7 @@ This is a [Bizhawk](https://github.com/TASVideos/BizHawk) add-on. Its goal is to
 - npm
 - Bizhawk
 
-##Roadmap
+## Roadmap
 - TODO : script that automatically downloads Bizhawk
 - TODO : add Vue.js that consumes this backend
 - TODO : add tutorial to use it with OBS
