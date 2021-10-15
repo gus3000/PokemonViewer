@@ -13,11 +13,12 @@ namespace PokemonViewer.Network
         public HttpListener server { get; private set; }
         public int timeouts { get; private set; }
         private byte[] buffer;
+        public string lastServedTimestamp { get; private set; }
 
 
         // private GameData? dataToSend;
         private bool isBlocked;
-        
+
         public Server(int port = 13000)
         {
             IPAddress localAddr = IPAddress.Parse("127.0.0.1");
@@ -36,10 +37,7 @@ namespace PokemonViewer.Network
                 return 1;
 
             isBlocked = true;
-            await Task.Run(() =>
-            {
-                SendDataAsync(gameData);
-            });
+            await Task.Run(() => { SendDataAsync(gameData); });
             isBlocked = false;
             return 0;
         }
@@ -50,12 +48,14 @@ namespace PokemonViewer.Network
             var request = context.Request;
             var response = context.Response;
             var output = response.OutputStream;
-            
-            response.Headers.Add(HttpResponseHeader.ContentType,"text/json");
+
+            response.Headers.Add(HttpResponseHeader.ContentType, "text/json");
+            response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:8080");
 
             byte[] buffer = Encoding.UTF8.GetBytes(gameData.Serialize());
             output.Write(buffer, 0, buffer.Length);
             output.Close();
+            lastServedTimestamp = DateTime.Now.ToLongTimeString();
         }
     }
 }

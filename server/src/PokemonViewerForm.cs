@@ -59,6 +59,8 @@ namespace PokemonViewer
             UpdateData();
             tasks.Add(Server.SendData(GameData));
             HandleTasks();
+            currentStatus.AppendLine($"last served : {Server.lastServedTimestamp}");
+            
             
             labelInfo.Text = currentStatus.ToString();
         }
